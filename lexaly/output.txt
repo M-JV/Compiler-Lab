@@ -1,0 +1,9 @@
+Line no.	 Token no.	 Token	 Lexeme
+
+      1		      0		Identifier	   int 
+      1		      1		Identifier	     a,
+      1		      2		Identifier	     b,
+      1		      3		Identifier	     c;
+      1		      4		Identifier	     a=
+      1		      5		Identifier	     b+
+      1		      6		Identifier	     c;
