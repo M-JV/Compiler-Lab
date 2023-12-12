@@ -23,54 +23,58 @@ void main()
 void findopr()
 {
     for (i = 0; str[i] != '\0'; i++)
+    {
         if (str[i] == ':')
         {
             k[j].pos = i;
             k[j++].op = ':';
         }
-    for (i = 0; str[i] != '\0'; i++)
-        if (str[i] == '/')
+        else if (str[i] == '/')
         {
             k[j].pos = i;
             k[j++].op = '/';
         }
-    for (i = 0; str[i] != '\0'; i++)
-        if (str[i] == '*')
+        else if (str[i] == '*')
         {
             k[j].pos = i;
             k[j++].op = '*';
         }
-
-    for (i = 0; str[i] != '\0'; i++)
-        if (str[i] == '+')
+        else if (str[i] == '+')
         {
             k[j].pos = i;
             k[j++].op = '+';
         }
-    for (i = 0; str[i] != '\0'; i++)
-        if (str[i] == '-')
+        else if (str[i] == '-')
         {
             k[j].pos = i;
             k[j++].op = '-';
         }
+    }
 }
+
 void explore()
 {
-    i = 1;
+    i = 0;
     while (k[i].op != '\0')
     {
         fleft(k[i].pos);
         fright(k[i].pos);
         str[k[i].pos] = tmpch--;
         printf("\t%c := %s%c%s\t\t", str[k[i].pos], left, k[i].op, right);
+
         for (j = 0; j < strlen(str); j++)
+        {
             if (str[j] != '$')
+            {
                 printf("%c", str[j]);
+            }
+        }
         printf("\n");
         i++;
     }
-    printf("\t%c:= %c\n", str[0], str[k[--i].pos]);
+    printf("\t%c := %s\n", str[0], right);
 }
+
 void fleft(int x)
 {
     int w = 0, flag = 0;
