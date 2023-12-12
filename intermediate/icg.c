@@ -1,17 +1,17 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <string.h>
 
-int i = 1, j = 0, tmpch = 90;
+int i = 1, j = 0, no = 0, tmpch = 90;
 char str[100], left[15], right[15];
+void findopr();
+void explore();
+void fleft(int);
+void fright(int);
 
 struct exp {
     int pos;
     char op;
 } k[15];
-
-void findopr();
-void explore();
-void process_side(char[], int, int, int);
 
 void main() {
     printf("\t\tINTERMEDIATE CODE GENERATION\n\n");
@@ -22,21 +22,25 @@ void main() {
     explore();
 }
 
-void findopr() {
+void findopr(){
     for (i = 0; str[i] != '\0'; i++) {
         if (str[i] == ':') {
             k[j].pos = i;
             k[j++].op = ':';
-        } else if (str[i] == '/') {
+        }
+        else if (str[i] == '/') {
             k[j].pos = i;
             k[j++].op = '/';
-        } else if (str[i] == '*') {
+        }
+        else if (str[i] == '*') {
             k[j].pos = i;
             k[j++].op = '*';
-        } else if (str[i] == '+') {
+        }
+        else if (str[i] == '+') {
             k[j].pos = i;
             k[j++].op = '+';
-        } else if (str[i] == '-') {
+        }
+        else if (str[i] == '-') {
             k[j].pos = i;
             k[j++].op = '-';
         }
@@ -46,10 +50,11 @@ void findopr() {
 void explore() {
     i = 0;
     while (k[i].op != '\0') {
-        process_side(left, k[i].pos, -1, -1);
-        process_side(right, k[i].pos, 1, 1);
+        fleft(k[i].pos);
+        fright(k[i].pos);
         str[k[i].pos] = tmpch--;
         printf("\t%c := %s%c%s\t\t", str[k[i].pos], left, k[i].op, right);
+
         for (j = 0; j < strlen(str); j++) {
             if (str[j] != '$') {
                 printf("%c", str[j]);
@@ -60,16 +65,30 @@ void explore() {
     }
 }
 
-void process_side(char side[], int x, int direction, int flag_value) {
+void fleft(int x) {
     int w = 0, flag = 0;
-    x += direction;
-    while (x >= 0 && str[x] != '+' && str[x] != '*' && str[x] != '=' && str[x] != '\0' && str[x] != '-' && str[x] != '/' && str[x] != ':') {
+    x--;
+    while (x != -1 && str[x] != '+' && str[x] != '*' && str[x] != '=' && str[x] != '\0' && str[x] != '-' && str[x] != '/' && str[x] != ':') {
         if (str[x] != '$' && flag == 0) {
-            side[w++] = str[x];
-            side[w] = '\0';
+            left[w++] = str[x];
+            left[w] = '\0';
             str[x] = '$';
-            flag = flag_value;
+            flag = 1;
         }
-        x += direction;
+        x--;
+    }
+}
+
+void fright(int x) {
+    int w = 0, flag = 0;
+    x++;
+    while (x != -1 && str[x] != '+' && str[x] != '*' && str[x] != '\0' && str[x] != '=' && str[x] != ':' && str[x] != '-' && str[x] != '/') {
+        if (str[x] != '$' && flag == 0) {
+            right[w++] = str[x];
+            right[w] = '\0';
+            str[x] = '$';
+            flag = 1;
+        }
+        x++;
     }
 }
