@@ -48,10 +48,8 @@ void explore() {
     while (k[i].op != '\0') {
         process_side(left, k[i].pos, -1, -1);
         process_side(right, k[i].pos, 1, 1);
-
         str[k[i].pos] = tmpch--;
         printf("\t%c := %s%c%s\t\t", str[k[i].pos], left, k[i].op, right);
-
         for (j = 0; j < strlen(str); j++) {
             if (str[j] != '$') {
                 printf("%c", str[j]);
@@ -60,7 +58,6 @@ void explore() {
         printf("\n");
         i++;
     }
-    printf("\t%c := %s\n", str[0], right);
 }
 
 void process_side(char side[], int x, int direction, int flag_value) {
