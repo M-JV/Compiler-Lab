@@ -9,7 +9,7 @@ int sc=0,wc=0,lc=0,cc=0;
 [^\t\n ]+ { wc++;  cc+=yyleng;}
 %%
 
-int main(int argc ,char* argv[ ])
+int main()
 {
 	printf("Enter the input:\n");
 	yylex();
