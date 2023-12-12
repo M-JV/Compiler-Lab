@@ -16,8 +16,6 @@ int yywrap() {
 
 int main()
 {
-    FILE *fp = fopen("text", "r");
-    yyin = fp;
     printf("enter the string");
     yylex();
     return 0;
