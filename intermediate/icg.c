@@ -1,38 +1,94 @@
-#include <stdio.h>
+#include<stdio.h>
 #include <string.h>
-void main()
-{
-    char icode[10][30], str[20], opr[10];
-    int i = 0;
-    printf("\nEnter the set of intermediate code (terminated by exit):\n");
-    do
-    {
-        scanf("%s", icode[i]);
-    } while (strcmp(icode[i++], "exit") != 0);
-    printf("\nTarget code generation");
-    printf("\n*******************");
-    i = 0;
-    do
-    {
-        strcpy(str, icode[i]);
-        switch (str[3])
-        {
-        case '+':
-            strcpy(opr, "ADD");
-            break;
-        case '-':
-            strcpy(opr, "SUB");
-            break;
-        case '*':
-            strcpy(opr, "MUL");
-            break;
-        case '/':
-            strcpy(opr, "DIV");
-            break;
-        }
 
-        printf("\n\tMov %c,R%d", str[2], i);
-        printf("\n%s%c,,R%d", opr, str[4], i);
-        printf("\n\tMov R%d%c", i, str[0]);
-    } while (strcmp(icode[++i], "exit") != 0);
+int i = 1, j = 0, no = 0, tmpch = 90;
+char str[100], left[15], right[15];
+void findopr();
+void explore();
+void fleft(int);
+void fright(int);
+
+struct exp {
+    int pos;
+    char op;
+} k[15];
+
+void main() {
+    printf("\t\tINTERMEDIATE CODE GENERATION\n\n");
+    printf("Enter the Expression :");
+    scanf("%s", str);
+    printf("The intermediate code:\t\tExpression\n");
+    findopr();
+    explore();
+}
+
+void findopr(){
+    for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] == ':') {
+            k[j].pos = i;
+            k[j++].op = ':';
+        }
+        else if (str[i] == '/') {
+            k[j].pos = i;
+            k[j++].op = '/';
+        }
+        else if (str[i] == '*') {
+            k[j].pos = i;
+            k[j++].op = '*';
+        }
+        else if (str[i] == '+') {
+            k[j].pos = i;
+            k[j++].op = '+';
+        }
+        else if (str[i] == '-') {
+            k[j].pos = i;
+            k[j++].op = '-';
+        }
+    }
+}
+
+void explore() {
+    i = 0;
+    while (k[i].op != '\0') {
+        fleft(k[i].pos);
+        fright(k[i].pos);
+        str[k[i].pos] = tmpch--;
+        printf("\t%c := %s%c%s\t\t", str[k[i].pos], left, k[i].op, right);
+
+        for (j = 0; j < strlen(str); j++) {
+            if (str[j] != '$') {
+                printf("%c", str[j]);
+            }
+        }
+        printf("\n");
+        i++;
+    }
+}
+
+void fleft(int x) {
+    int w = 0, flag = 0;
+    x--;
+    while (x != -1 && str[x] != '+' && str[x] != '*' && str[x] != '=' && str[x] != '\0' && str[x] != '-' && str[x] != '/' && str[x] != ':') {
+        if (str[x] != '$' && flag == 0) {
+            left[w++] = str[x];
+            left[w] = '\0';
+            str[x] = '$';
+            flag = 1;
+        }
+        x--;
+    }
+}
+
+void fright(int x) {
+    int w = 0, flag = 0;
+    x++;
+    while (x != -1 && str[x] != '+' && str[x] != '*' && str[x] != '\0' && str[x] != '=' && str[x] != ':' && str[x] != '-' && str[x] != '/') {
+        if (str[x] != '$' && flag == 0) {
+            right[w++] = str[x];
+            right[w] = '\0';
+            str[x] = '$';
+            flag = 1;
+        }
+        x++;
+    }
 }
