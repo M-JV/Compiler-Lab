@@ -1,3 +1,4 @@
+// Input => a+b*c=d 
 #include<stdio.h>
 #include <string.h>
 
