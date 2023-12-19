@@ -25,3 +25,5 @@ int yywrap()
 return 1;
 
 }
+
+// input -> a=b+c => valid
