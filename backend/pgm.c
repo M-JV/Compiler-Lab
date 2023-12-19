@@ -39,3 +39,12 @@ void main()
     } while (strcmp(icode[++i], "exit") != 0);
 
 }
+
+/*
+Input
+a=a*b
+c=f*h
+t=q+w
+exit
+IF THIS DOESN'T WORK TRY ADDING SPACES
+*/
