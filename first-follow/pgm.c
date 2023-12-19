@@ -1,3 +1,17 @@
+/*
+Input
+no of productions => 8
+Productions
+E=TR
+R=+TR
+R=e
+T=FY
+Y=*FY
+Y=e
+F=(E)
+F=l
+*/
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
