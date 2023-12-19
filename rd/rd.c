@@ -1,3 +1,4 @@
+// Input => a+a*a
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
