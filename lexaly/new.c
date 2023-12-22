@@ -23,34 +23,52 @@ int isOperator(char ch) {
     return 0;
 }
 
-int main() {
+void main() {
     char ch, buffer[15];
-    FILE *fp;
-    int j = 0;
+    FILE *fp,*f2;
+    int j = 0,line = 1,tk=0;
 
     fp = fopen("input.txt", "r");
-    if (fp == NULL) {
+    f2 = fopen("write.txt","w");
+    if (fp == NULL || f2 == NULL) {
         printf("Error while opening the file\n");
         exit(0);
     }
 
+    fprintf(f2,"Line No\t Token No\t Token\t\t Lexime\t\n");
+    fprintf(f2,"--------------------------------------------------\n");
+    printf("Line No\t Token No\t Token\t Lexime\t\n");
+    printf("--------------------------------------------------\n");
     while ((ch = fgetc(fp)) != EOF) {
         if (isalnum(ch)) {
             buffer[j++] = ch;
         } else if (isOperator(ch) || ch == ';') {
             if (j != 0) {
                 buffer[j] = '\0';
-                printf("%s is identifier\n", buffer);
+                printf("%d\t %d\t %s is identifier\n",line,tk,buffer);
+                fprintf(f2,"%d\t\t\t %d\t\t%s\t\t  identifier\n",line,tk,buffer);
+                tk++;
                 j = 0;
             }
-            printf(ch == ';' ? "; is special symbol\n" : "%c is operator\n", ch);
+            printf(ch==';' ? "%d\t %d\t %c is Special symbol\n" : "%d\t\t %d\t%c is identifier\n",line,tk,ch);
+            fprintf(f2,ch==';' ? "%d\t\t\t %d\t\t %c\t\t Special symbol\n" : "%d\t\t\t %d\t\t%c\t\t identifier\n",line,tk,ch);
+            tk++;
         } else if ((ch == ' ' || ch == '\n') && (j != 0)) {
+            if(ch=='\n')
+                line++;
             buffer[j] = '\0';
             j = 0;
-            printf(isKeyword(buffer) ? "%s is keyword\n" : "%s is identifier\n", buffer);
+            printf(isKeyword(buffer) ? "%d\t %d\t%s is keyword\n" : "%d\t %d\t%s is identifier\n",tk,line,buffer);
+            fprintf(f2,isKeyword(buffer) ? "%d\t\t\t %d\t\t%s\t\t keyword\n" : "%d\t\t\t %d\t\t%s\t\t identifier\n",tk,line,buffer);
+            tk++;
+        }
+        else if(ch == '\n'){
+            line++;
         }
     }
+    printf("--------------------------------------------------\n");
+    fprintf(f2,"--------------------------------------------------\n");
 
     fclose(fp);
-    return 0;
+    fclose(f2);
 }
